@@ -12,7 +12,7 @@ type loggingMiddleware struct {
 
 func (mw loggingMiddleware) Hello(s string) (output string, err error) {
 	defer func(begin time.Time) {
-		mw.logger.Log(
+		_ = mw.logger.Log(
 			"method", "hello",
 			"input", s,
 			"output", output,
