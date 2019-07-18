@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/go-kit/kit/transport"
@@ -53,7 +54,9 @@ func MakeHelloEndpoint(svc HelloService) endpoint.Endpoint {
 
 func decodeHelloRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	var req helloRequest
+	fmt.Printf("reqq:%v", r)
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		// fmt.Println("req:", req)
 		return nil, err
 	}
 	return req, nil

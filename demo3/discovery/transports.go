@@ -10,16 +10,12 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type HelloRequest struct {
-	S string `json:"s"`
-}
-type HelloResponse struct {
-	S   string `json:"s"`
-	Err error  `json:"err"`
+type CalRequest struct {
+	Str string `json:"str"`
 }
 
 func decodeDiscoverRequest(_ context.Context, r *http.Request) (interface{}, error) {
-	var request HelloRequest
+	var request CalRequest
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		return nil, err
 	}
