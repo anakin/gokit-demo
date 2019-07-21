@@ -44,12 +44,6 @@ func helloFactory(_ context.Context, method, path string) sd.Factory {
 func encodeHelloRequest(_ context.Context, req *http.Request, request interface{}) error {
 	fmt.Println("dis req:", request)
 	cRequest := request.(CalRequest)
-	// jsonStr := []byte(`{"s": "aa"}`)
-	// var err error
-	// req, err = http.NewRequest("POST", "", bytes.NewBuffer(jsonStr))
-	// if err != nil {
-	// 	return err
-	// }
 	var buf bytes.Buffer
 	reqq := helloRequest{S: cRequest.Str}
 	if err := json.NewEncoder(&buf).Encode(reqq); err != nil {

@@ -33,8 +33,6 @@ func NewConsulRegister(consulAddress, serviceName, serviceIP string, servicePort
 	}
 }
 
-// https://github.com/ru-rocker/gokit-playground/blob/master/lorem-consul/register.go
-// https://github.com/hatlonely/hellogolang/blob/master/sample/addservice/internal/grpcsr/consul_register.go
 func (r *ConsulRegister) NewConsulGRPCRegister() (*consulsd.Registrar, error) {
 	var logger log.Logger
 	{

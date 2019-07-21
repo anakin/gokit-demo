@@ -10,6 +10,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
+//CalRequest request struct
 type CalRequest struct {
 	Str string `json:"str"`
 }
