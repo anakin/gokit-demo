@@ -15,5 +15,6 @@ func New() UserService {
 }
 
 func (userService) Get(_ context.Context, id int32) (string, error) {
+	//time.Sleep(time.Second * 2)
 	return "userinfo:aaaa", nil
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"demo4/middleware"
 	pb "demo4/proto/user"
 	"demo4/server"
 	"fmt"
@@ -8,6 +9,8 @@ import (
 	"google.golang.org/grpc"
 	"net"
 	"os"
+	"github.com/juju/ratelimit"
+	"time"
 )
 
 func main() {
@@ -17,19 +20,22 @@ func main() {
 		logger = log.With(logger, "ts", log.DefaultTimestampUTC)
 		logger = log.With(logger, "caller", log.DefaultCaller)
 	}
+	rlbucket := ratelimit.NewBucket(1*time.Second, 5)
 	svc := server.New()
+	ge:=server.MakeUserEndpoint(svc)
+	ge= middleware.NewTokenBucketLimiter(rlbucket)(ge)
 	endpoint := server.Endpoints{
-		GetEndpoint: server.MakeUserEndpoint(svc),
+		GetEndpoint: ge,
 	}
-	listener,err:=net.Listen("tcp",":8080")
+	listener, err := net.Listen("tcp", ":8080")
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	ser:=server.MakeGRPCServer(endpoint)
-	s:=grpc.NewServer()
-	pb.RegisterUserServer(s,ser)
-	err=s.Serve(listener)
+	ser := server.MakeGRPCServer(endpoint)
+	s := grpc.NewServer()
+	pb.RegisterUserServer(s, ser)
+	err = s.Serve(listener)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
